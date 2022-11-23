@@ -5,12 +5,20 @@ transformer = MinMaxScaler()
 train_np_array = transformer.fit_transform(train_df[['Close']])
 val_np_array = transformer.transform(val_df[['Close']])
 train_x, train_label = slice_time_series_data_from_np_array(train_np_array, x_column_indexes=[0], label_column_indexes=[0], window_length=4)
+#print(train_x.shape) #
+#print(train_labels.shape) #
+#print(val_x.shape) #
+#print(val_labels.shape) #
 '''
 '''
 transformer = MinMaxScaler()
 train_np_array = transformer.fit_transform(train_df[['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']])
 val_np_array = transformer.transform(val_df[['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']])
 train_x, train_label = slice_time_series_data_from_np_array(train_np_array, x_column_indexes=[0, 1, 2, 3, 4], label_column_indexes=[3], window_length=4)
+#print(train_x.shape) #(973, 7, 6)
+#print(train_labels.shape) #(973, 1)
+#print(val_x.shape) #(238, 7, 6)
+#print(val_labels.shape) #(238, 1)
 '''
 def slice_time_series_data_from_np_array(np_array, x_column_indexes=None, label_column_indexes=None, sequence_length=3):
     #print(np_array.shape) #(980, 1)
