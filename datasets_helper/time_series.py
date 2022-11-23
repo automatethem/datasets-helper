@@ -1,6 +1,7 @@
 import numpy as np
 
 '''
+from sklearn.preprocessing import MinMaxScaler
 transformer = MinMaxScaler()
 transformer.fit(train_df[['Close']].to_numpy())
 train_np_array = transformer.transform(val_df[['Close']].to_numpy())
@@ -11,6 +12,7 @@ train_x, train_label = slice_time_series_data_from_np_array(train_np_array, x_co
 #print(val_labels.shape) #
 '''
 '''
+from sklearn.preprocessing import MinMaxScaler
 transformer = MinMaxScaler()
 transformer.fit(train_df[['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']].to_numpy())
 train_np_array = transformer.transform(val_df[['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']].to_numpy())
@@ -40,26 +42,3 @@ def slice_time_series_data_from_np_array(np_array, x_column_indexes=None, label_
     #print(x.shape) #(977, 3, 1)
     #print(labels.shape) #(977, 1)
     return x, labels 
-
-#x, y = slice_time_series_data_from_df(df, x_columns=['Close'], label_columns=['Close'], sequence_length=7)
-#x, y = slice_time_series_data_from_df(df, x_columns=['Open', 'High', 'Low', 'Adj Close', 'Volume', 'Close'], label_columns=['Close'], sequence_length=7)
-def slice_time_series_data_from_df(df, x_columns=None, label_columns=None, sequence_length=7):
-    #print(df.shape) #(1225, 7)
-    window_length = sequence_length + 1
-    x = []
-    y = []
-    for i in range(0, len(df) - window_length + 1): #0 ~ (1225 - 4 - 1) 
-        window = df.iloc[i:i + window_length, :]
-        if x_columns:
-            x.append(window[x_columns].iloc[:-1, :])
-        else:
-            x.append(window.iloc[:-1, :])
-        if label_columns:
-            y.append(window[label_columns].iloc[-1, :])
-        else:
-            y.append(window.iloc[-1, :])
-    x = np.array(x)
-    y = np.array(y)
-    #print(x.shape) #(1222, 3, 1)
-    #print(y.shape) #(1222, 1)
-    return x, y
