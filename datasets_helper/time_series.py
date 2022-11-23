@@ -6,10 +6,10 @@ transformer = MinMaxScaler()
 transformer.fit(train_df[['Close']].to_numpy())
 train_np_array = transformer.transform(val_df[['Close']].to_numpy())
 train_x, train_label = slice_time_series_data_from_np_array(train_np_array, x_column_indexes=[0], label_column_indexes=[0], sequence_length=7)
-#print(train_x.shape) #
-#print(train_labels.shape) #
-#print(val_x.shape) #
-#print(val_labels.shape) #
+#print(train_x.shape) #(973, 7, 1)
+#print(train_labels.shape) #(973, 1)
+#print(val_x.shape) #(238, 7, 1)
+#print(val_labels.shape) #(238, 1)
 '''
 '''
 from sklearn.preprocessing import MinMaxScaler
