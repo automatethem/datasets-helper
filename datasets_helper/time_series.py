@@ -1,8 +1,40 @@
 import numpy as np
 
-#x, y = slice_time_series_data(df, x_columns=['Close'], label_columns=['Close'], window_length=4)
-#x, y = slice_time_series_data(df, x_columns=['Open', 'High', 'Low', 'Adj Close', 'Volume', 'Close'], label_columns=['Close'], window_length=4)
-def slice_time_series_data(df, x_columns=None, label_columns=None, window_length=4):
+'''
+transformer = MinMaxScaler()
+train_np_array = transformer.fit_transform(train_df[['Close']])
+val_np_array = transformer.transform(val_df[['Close']])
+train_x, train_label = slice_time_series_data_from_np_array(train_np_array, x_column_indexes=[0], label_column_indexes=[0], window_length=4)
+'''
+'''
+transformer = MinMaxScaler()
+train_np_array = transformer.fit_transform(train_df[['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']])
+val_np_array = transformer.transform(val_df[['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']])
+train_x, train_label = slice_time_series_data_from_np_array(train_np_array, x_column_indexes=[0, 1, 2, 3, 4], label_column_indexes=[3], window_length=4)
+'''
+def slice_time_series_data_from_np_array(np_array, x_column_indexes=None, label_column_indexes=None, window_length=4):
+    #print(np_array.shape) #(980, 1)
+    x = []
+    labels = []
+    for i in range(0, len(np_array) - window_length + 1): #0 ~ (980 - 4 - 1) 
+        window = np_array[i:i + window_length, :]
+        if x_column_indexes:
+            x.append(window[:-1, x_column_indexes])
+        else:
+            labels.append(window[:-1, :])
+        if label_column_indexes:
+            labels.append(window[-1, label_column_indexes])
+        else:
+            labels.append(window[-1, :])
+    x = np.array(x)
+    labels = np.array(labels)
+    #print(x.shape) #(977, 3, 1)
+    #print(labels.shape) #(977, 1)
+    return x, labels 
+
+#x, y = slice_time_series_data_from_df(df, x_columns=['Close'], label_columns=['Close'], window_length=4)
+#x, y = slice_time_series_data_from_df(df, x_columns=['Open', 'High', 'Low', 'Adj Close', 'Volume', 'Close'], label_columns=['Close'], window_length=4)
+def slice_time_series_data_from_df(df, x_columns=None, label_columns=None, window_length=4):
     #print(df.shape) #(1225, 7)
     x = []
     y = []
